@@ -1,5 +1,6 @@
 package com.giyong.logistics.domain.product.entity;
 
+import com.giyong.logistics.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
