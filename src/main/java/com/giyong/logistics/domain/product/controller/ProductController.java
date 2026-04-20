@@ -2,6 +2,7 @@ package com.giyong.logistics.domain.product.controller;
 
 import com.giyong.logistics.domain.product.dto.ProductRequest;
 import com.giyong.logistics.domain.product.dto.ProductResponse;
+import com.giyong.logistics.domain.product.dto.UpdateProductRequest;
 import com.giyong.logistics.domain.product.entity.Product;
 import com.giyong.logistics.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,15 @@ public class ProductController {
 
         return ResponseEntity.ok().body(new ProductResponse(findById));
     }
+
+    // 상품 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> update(@PathVariable Long id, @RequestBody UpdateProductRequest request) {
+        Product updateProduct = productService.update(id,request);
+
+        return ResponseEntity.ok().body(new ProductResponse(updateProduct));
+    }
+
 
     // 등록 상품 삭제
     @DeleteMapping("{id}")

@@ -28,4 +28,13 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column (name = "status", nullable = false)
     private ProductStatus status;
+
+    // 수정 메서드
+    public void update (String productNumber, String productName, int price, ProductStatus status) {
+        this.productNumber = productNumber;
+        this.productName = productName;
+        this.price = price;
+        this.status = status;
+    }
+
 }

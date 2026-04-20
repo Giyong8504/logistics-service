@@ -1,8 +1,11 @@
 package com.giyong.logistics.domain.product.service;
 
 import com.giyong.logistics.domain.product.dto.ProductRequest;
+import com.giyong.logistics.domain.product.dto.UpdateProductRequest;
 import com.giyong.logistics.domain.product.entity.Product;
+import com.giyong.logistics.domain.product.entity.ProductStatus;
 import com.giyong.logistics.domain.product.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,20 @@ public class ProductService {
         return productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("조회된 상품이 없습니다." +id));
 
+    }
+
+    // 수정
+    @Transactional // 작업 단위 처리
+    public Product update (Long id, UpdateProductRequest request) {
+        Product updateProduct = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("수정할 상품이 없습니다." +id));
+
+        updateProduct.update(request.getProductNumber(),
+                request.getProductName(),
+                request.getPrice(),
+                ProductStatus.valueOf(request.getStatus()));
+
+        return updateProduct;
     }
 
     // 삭제
