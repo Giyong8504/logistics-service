@@ -34,4 +34,12 @@ public class ProductController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saveProduct);
     }
+
+    // 단일 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> findById(@PathVariable Long id) {
+        Product findById = productService.findById(id);
+
+        return ResponseEntity.ok().body(new ProductResponse(findById));
+    }
 }

@@ -23,4 +23,11 @@ public class ProductService {
     public Product save(ProductRequest request) {
         return productRepository.save(request.toEntity());
     }
+
+    // 단일 조회
+    public Product findById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("조회된 상품이 없습니다." +id));
+
+    }
 }
