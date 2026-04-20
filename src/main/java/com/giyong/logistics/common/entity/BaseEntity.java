@@ -1,5 +1,6 @@
 package com.giyong.logistics.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -18,10 +19,12 @@ public class BaseEntity {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime reg_dt; // 생성일
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime regDt; // 생성일
 
     @LastModifiedDate
-    @Column(updatable = false)
-    private LocalDateTime mod_dt; // 수정일
+    @Column
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime modDt; // 수정일
 
 }

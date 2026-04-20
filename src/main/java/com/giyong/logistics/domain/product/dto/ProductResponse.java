@@ -14,8 +14,8 @@ public class ProductResponse {
     private String productName;
     private int price;
     private String status;
-    private BaseEntity reg_dt;
-    private BaseEntity mod_dt;
+    private LocalDateTime regDt;
+    private LocalDateTime modDt;
 
     public ProductResponse(Product product) {
         this.productId = product.getProductId();
@@ -23,7 +23,7 @@ public class ProductResponse {
         this.productName = product.getProductName();
         this.price = product.getPrice();
         this.status = product.getStatus().name();
-        this.reg_dt = product;
-        this.mod_dt = product;
+        this.regDt = product.getRegDt();
+        this.modDt = product.getModDt();
     }
 }
