@@ -43,7 +43,7 @@ public class ProductService {
         updateProduct.update(request.getProductNumber(),
                 request.getProductName(),
                 request.getPrice(),
-                ProductStatus.valueOf(request.getStatus()));
+                ProductStatus.valueOf(request.getStatus().toUpperCase()));
 
         return updateProduct;
     }

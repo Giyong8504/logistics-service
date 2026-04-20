@@ -30,10 +30,10 @@ public class ProductController {
 
     // 저장
     @PostMapping
-    public ResponseEntity<Product> save(@RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> save(@RequestBody ProductRequest request) {
         Product saveProduct = productService.save(request);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(saveProduct);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ProductResponse(saveProduct));
     }
 
     // 단일 조회
