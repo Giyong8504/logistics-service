@@ -42,4 +42,12 @@ public class ProductController {
 
         return ResponseEntity.ok().body(new ProductResponse(findById));
     }
+
+    // 등록 상품 삭제
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        productService.delete(id);
+
+        return ResponseEntity.ok().build();
+    }
 }

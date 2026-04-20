@@ -30,4 +30,9 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("조회된 상품이 없습니다." +id));
 
     }
+
+    // 삭제
+    public void delete(Long id) {
+        productRepository.deleteById(id);
+    }
 }
