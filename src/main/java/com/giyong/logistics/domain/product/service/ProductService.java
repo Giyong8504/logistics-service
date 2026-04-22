@@ -5,6 +5,7 @@ import com.giyong.logistics.domain.product.dto.UpdateProductRequest;
 import com.giyong.logistics.domain.product.entity.Product;
 import com.giyong.logistics.domain.product.entity.ProductStatus;
 import com.giyong.logistics.domain.product.repository.ProductRepository;
+import com.giyong.logistics.domain.stock.service.StockService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final StockService stockService;
 
     // 전체 조회
     public List<Product> findAll() {
@@ -23,8 +25,13 @@ public class ProductService {
     }
 
     // 저장
+    @Transactional
     public Product save(ProductRequest request) {
-        return productRepository.save(request.toEntity());
+
+        Product product = productRepository.save(request.toEntity());
+        stockService.createStock(product); // 재고도 함께 생성
+
+        return product;
     }
 
     // 단일 조회
@@ -36,7 +43,7 @@ public class ProductService {
 
     // 수정
     @Transactional // 작업 단위 처리
-    public Product update (Long id, UpdateProductRequest request) {
+    public Product update(Long id, UpdateProductRequest request) {
         Product updateProduct = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("수정할 상품이 없습니다." +id));
 
