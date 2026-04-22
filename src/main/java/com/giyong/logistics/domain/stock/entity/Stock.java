@@ -25,6 +25,9 @@ public class Stock {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
+    @Version
+    private Long version;
+
     // 생성자
     public Stock(Product product, int quantity) {
         this.product = product;
