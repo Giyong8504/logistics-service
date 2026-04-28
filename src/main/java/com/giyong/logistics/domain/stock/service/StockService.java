@@ -3,6 +3,9 @@ package com.giyong.logistics.domain.stock.service;
 import com.giyong.logistics.domain.product.entity.Product;
 import com.giyong.logistics.domain.product.repository.ProductRepository;
 import com.giyong.logistics.domain.stock.entity.Stock;
+import com.giyong.logistics.domain.stock.entity.StockHistory;
+import com.giyong.logistics.domain.stock.entity.StockType;
+import com.giyong.logistics.domain.stock.repository.StockHistoryRepository;
 import com.giyong.logistics.domain.stock.repository.StockRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,8 @@ public class StockService {
 
     private final StockRepository stockRepository;
     private final StockTxService stockTxService;
+    private final StockHistoryRepository stockHistoryRepository;
+    private final ProductRepository productRepository;
 
 
     // 재고 생성
@@ -37,6 +42,7 @@ public class StockService {
 //        stock.reduceStock(quantity);
 //    }
 
+    // 동시성 재시도
     public void reduceStockRetry(Long productId, int quantity) {
 
         int retry = 0;
@@ -62,5 +68,43 @@ public class StockService {
 //                .orElseThrow(() -> new IllegalArgumentException("재고가 없습니다."));
 //
 //    }
+
+    // 입고
+    public void receive(Long productId, int quantity) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("상품이 없습니다."));
+
+        // 재고 증가
+        stockTxService.restock(productId, quantity);
+
+        // 이력 내용 저장
+        StockHistory history = new StockHistory(
+                null,
+                product,
+                quantity,
+                StockType.IN
+        );
+
+        stockHistoryRepository.save(history);
+    }
+
+    // 출고
+    public void ship(Long productId, int quantity) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("상품이 없습니다"));
+
+        // 재고 감소
+        stockTxService.reduceStock(productId, quantity);
+
+        // 이력 내용 저장
+        StockHistory history = new StockHistory(
+                null,
+                product,
+                quantity,
+                StockType.IN
+        );
+
+        stockHistoryRepository.save(history);
+    }
 
 }
